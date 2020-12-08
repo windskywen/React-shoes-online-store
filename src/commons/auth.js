@@ -12,7 +12,18 @@ const getToken = token => {
 
 const isLogin = () => {
     const jwToken = getToken();
-    return !!jwToken;
+    return !!jwToken && !isTokenExprired();
+}
+
+const isTokenExprired = token => {
+    try {
+        const _info = decode(token);
+        if (_info.exp < Date.now() / 1000) {
+            return true;
+        } else return false;
+    } catch {
+        return false;
+    }
 }
 
 const getUser = () => {
