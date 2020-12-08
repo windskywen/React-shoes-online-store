@@ -13,13 +13,14 @@ import { toast } from 'react-toastify';
             const res = await axios.post('/auth/login', { email, password })
             const jwToken = res.data;
             console.log(jwToken);
-            global.auth.setToken(jwToken)
-            toast.success('Login success')
-            props.history.push('/')
+            global.auth.setToken(jwToken);
+            toast.success('Login success');
+            props.history.push('/');
         } catch (error){
-            const message = error.response.message;
-            toast.error(message)
-    }}
+            const message = error.response.data.message;
+            toast.error(message);
+        }
+    };
 
     return(
         <div className="login-wrapper">
