@@ -2,6 +2,8 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Need to open the [API server](https://github.com/windskywen/React-shoes-online-store-api) first.
+
 ## Available Scripts
 
 In the project directory, you can run:
