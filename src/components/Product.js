@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import axios from 'commons/axios';
 import { toast } from 'react-toastify';
 import { formatPrice } from 'commons/helper';
@@ -24,6 +25,12 @@ class Product extends React.Component {
     }
 
     addCart = async () => {
+        if(!global.auth.isLogin()){
+            this.props.history.push('/login');
+            toast.info('Please login first');
+            return;
+        }
+
         try {
             const { id, name, image, price } = this.props.product;
             const res = await axios.get(`/carts?productId=${id}`);
@@ -50,6 +57,19 @@ class Product extends React.Component {
         }
     }
 
+    renderManagerBtn = () => {
+        const user = global.auth.getUser() || {};
+        if(user.type === 1){
+           return(
+            <div className="p-head has-text-right" onClick={this.toEdit}>
+                <span className="icon edit-btn">
+                    <i className="fas fa-sliders-h"></i>
+                </span>
+            </div>
+            ) 
+        }
+    }
+
     render() {
         const { image, name, tags, price, status } = this.props.product;
         const p_class ={
@@ -60,11 +80,7 @@ class Product extends React.Component {
         return (
             <div className={p_class[status]}>
                 <div className="p-content">
-                    <div className="p-head has-text-right" onClick={this.toEdit}>
-                        <span className="icon edit-btn">
-                            <i className="fas fa-sliders-h"></i>
-                        </span>
-                    </div>
+                    {this.renderManagerBtn()}
                     <div className="img-wrapper">
                         <div className="out-stock-text">Out of Stock</div>
                         <figure className="image is-4by3">
@@ -86,4 +102,4 @@ class Product extends React.Component {
     }
 }
 
-export default Product;
+export default withRouter(Product);
